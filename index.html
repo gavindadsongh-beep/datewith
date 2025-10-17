@@ -1,80 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hey Yawie ❤️💍</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      text-align: center;
-      background: linear-gradient(135deg, #ffb6c1, #ff69b4);
-      height: 100vh;
-      margin: 0;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 1em;
-    }
-    .btn {
-      padding: 15px 30px;
-      font-size: 1.2em;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin: 10px;
-    }
-    .yes {
-      background-color: #ff1493;
-      color: white;
-    }
-    .no {
-      background-color: white;
-      color: #ff1493;
-      position: relative;
-    }
-    .no:hover {
-      position: absolute;
-      top: calc(20% + (Math.random() * 60%));
-      left: calc(10% + (Math.random() * 70%));
-    }
-    p {
-      margin-top: 2em;
-      font-size: 1em;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hey Yawie ❤️💍</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+    height: 100vh;
+    margin: 0;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+  h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3em;
+    margin-bottom: 0.5em;
+    z-index: 10;
+    position: relative;
+  }
+  h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5em;
+    margin-bottom: 1.5em;
+    z-index: 10;
+    position: relative;
+  }
+  .btn {
+    padding: 15px 30px;
+    font-size: 1.3em;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 10px;
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  .yes { background-color: #ff1493; color: white; }
+  .no { background-color: white; color: #ff1493; position: absolute; }
+  p {
+    font-family: 'Poppins', sans-serif;
+    z-index: 10;
+    position: relative;
+    margin-top: 2em;
+    font-size: 1.1em;
+  }
+  .heart {
+    position: absolute;
+    color: #ff69b4;
+    font-size: 1.2em;
+    animation: floatUp linear;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+  }
+</style>
 </head>
 <body>
-  <h1>Hey Yawie ❤️💍</h1>
-  <h2>Will you go on a date with me? 💕</h2>
-  <div>
-    <button class="btn yes" onclick="yesClicked()">Yes 😘</button>
-    <button class="btn no" id="noBtn">No 🙈</button>
-  </div>
-  <p>From Gavin 💞</p>
+<h1>Hey Yawie ❤️💍</h1>
+<h2>Will you go on a date with me? 💕</h2>
+<div>
+  <button class="btn yes" onclick="yesClicked()">Yes 😘</button>
+  <button class="btn no" id="noBtn">No 🙈</button>
+</div>
+<p>From Gavin 💞</p>
 
-  <script>
-    const noBtn = document.getElementById('noBtn');
-    noBtn.addEventListener('mouseover', () => {
-      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-      noBtn.style.position = 'absolute';
-      noBtn.style.left = `${x}px`;
-      noBtn.style.top = `${y}px`;
-    });
+<script>
+const noBtn = document.getElementById('noBtn');
 
-    function yesClicked() {
-      document.body.innerHTML = `
-        <h1>Yay! 🎉 I knew you'd say yes ❤️</h1>
-        <p>Can't wait for our special day 😍</p>
-      `;
-    }
-  </script>
+// Runaway No button
+function moveNo() {
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+  noBtn.style.left = x + 'px';
+  noBtn.style.top = y + 'px';
+}
+
+// Trigger move on hover/touch
+noBtn.addEventListener('mouseover', moveNo);
+noBtn.addEventListener('touchstart', moveNo);
+noBtn.addEventListener('mousemove', moveNo);
+noBtn.addEventListener('click', moveNo);
+
+// Yes button clicked
+function yesClicked() {
+  document.body.innerHTML = `
+    <h1 style="font-family: 'Great Vibes', cursive;">Yay! 🎉 I knew you'd say yes ❤️</h1>
+    <p style="font-family: 'Poppins', sans-serif;">Can't wait for our special day 😍</p>
+  `;
+}
+
+// Floating hearts
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.style.left = Math.random() * window.innerWidth + 'px';
+  heart.style.fontSize = (12 + Math.random() * 20) + 'px';
+  heart.innerText = '💖';
+  document.body.appendChild(heart);
+  heart.style.animationDuration = (3 + Math.random() * 3) + 's';
+  setTimeout(() => heart.remove(), 6000);
+}
+
+// Create hearts continuously
+setInterval(createHeart, 300);
+</script>
 </body>
 </html>
