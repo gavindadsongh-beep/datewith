@@ -23,8 +23,8 @@ body {
 .hero h2 {font-size:1.2rem; color:rgba(255,255,255,0.95); margin:0 0 24px;}
 .btn-container {display:flex; gap:20px; justify-content:center; align-items:center; position:relative; flex-wrap:wrap;}
 #yesBtn {z-index:5;}
-#noBtn {position:fixed; z-index:10;}
-.btn {padding:14px 34px; border-radius:12px; border:none; cursor:pointer; font-size:1.05rem; box-shadow:0 8px 24px rgba(0,0,0,0.12); transition:transform 0.2s;}
+#noBtn {position:relative; transition: transform 0.2s;}
+.btn {padding:14px 34px; border-radius:12px; border:none; cursor:pointer; font-size:1.05rem; box-shadow:0 8px 24px rgba(0,0,0,0.12);}
 .btn-yes {background:#ff4d8a; color:#fff; font-weight:600;}
 .btn-yes:hover {transform:scale(1.05);}
 .btn-no {background:#fff; color:#ff4d8a; border:2px solid #ff4d8a;}
@@ -117,20 +117,21 @@ const restaurantPage = document.getElementById('restaurantPage');
 const finalPage = document.getElementById('finalPage');
 const pickBtns = document.querySelectorAll('.pick-btn');
 const cards = document.querySelectorAll('.card');
+const btnContainer = document.querySelector('.btn-container');
 
-// Smooth No button movement (never leaves viewport)
-document.body.addEventListener('mousemove', e => {
+// Smooth No button movement inside container
+btnContainer.addEventListener('mousemove', e => {
   const rect = noBtn.getBoundingClientRect();
-  const offset = 80; // smaller offset for smoother motion
+  const offset = 60;
+  const containerRect = btnContainer.getBoundingClientRect();
   if(e.clientX > rect.left - offset && e.clientX < rect.right + offset &&
      e.clientY > rect.top - offset && e.clientY < rect.bottom + offset){
-    const maxX = window.innerWidth - rect.width;
-    const maxY = window.innerHeight - rect.height;
-    const delta = 150; // max movement distance per frame
-    const newX = Math.min(Math.max(rect.left + (Math.random()-0.5)*delta,0), maxX);
-    const newY = Math.min(Math.max(rect.top + (Math.random()-0.5)*delta,0), maxY);
-    noBtn.style.left = `${newX}px`;
-    noBtn.style.top = `${newY}px`;
+    const maxX = containerRect.width - rect.width;
+    const maxY = containerRect.height - rect.height;
+    const delta = 30;
+    const newX = Math.min(Math.max(noBtn.offsetLeft + (Math.random()-0.5)*delta,0), maxX);
+    const newY = Math.min(Math.max(noBtn.offsetTop + (Math.random()-0.5)*delta,0), maxY);
+    noBtn.style.transform = `translate(${newX - noBtn.offsetLeft}px, ${newY - noBtn.offsetTop}px)`;
   }
 });
 
