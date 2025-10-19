@@ -42,7 +42,14 @@
   }
   .yes { background-color: #ff1493; color: white; }
   .no { background-color: white; color: #ff1493; position: absolute; }
-  p { margin-top: 2em; font-size: 1.1em; }
+  .signature {
+    position: absolute;
+    bottom: 8px;
+    right: 10px;
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.8);
+    font-family: sans-serif;
+  }
   .heart {
     position: absolute;
     color: #ff69b4;
@@ -62,7 +69,7 @@
     <button class="btn yes" onclick="yesClicked()">Yes 😘</button>
     <button class="btn no" id="noBtn">No 🙈</button>
   </div>
-  <p>Made specifically for Yaa Ayaw by you know who 😎</p>
+  <p class="signature">Made specifically for Yaa Ayaw by you know who 😎</p>
 
 <script>
 const noBtn = document.getElementById('noBtn');
