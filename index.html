@@ -1,71 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restaurant Choice</title>
-  <style>
-    body { font-family: sans-serif; text-align: center; margin-top: 50px; position: relative; }
-    button { padding: 10px 20px; margin: 10px; font-size: 18px; cursor: pointer; }
-    #restaurant-cards { display: none; margin-top: 20px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-    .card { width: 150px; border: 2px solid #ccc; border-radius: 10px; overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
-    .card:hover { transform: scale(1.05); }
-    .card img { width: 100%; height: 100px; object-fit: cover; }
-    .card p { margin: 10px 0; font-weight: bold; }
-    .selected { border-color: #ff4d6d; }
-    #noButton { position: absolute; top: 200px; left: 200px; transition: top 0.2s, left 0.2s; }
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Hey Yawie ❤️💍</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@1,600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --accent:#c59d5f;
+    --bg-pink-start:#ffb6c1;
+    --bg-pink-end:#ff69b4;
+    --card-bg:#fffaf5;
+    --muted:#666;
+  }
+  html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;}
+  body{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background: linear-gradient(135deg,var(--bg-pink-start),var(--bg-pink-end));
+    color:#111;
+    overflow:hidden;
+    position:relative;
+  }
+
+  /* Main heading area */
+  .hero { text-align:center; z-index:20; padding: 20px; }
+  .hero h1 { font-family:'Great Vibes', cursive; font-size:3rem; color:#fff; margin:0 0 8px; text-shadow:0 6px 18px rgba(0,0,0,0.15); }
+  .hero h2 { font-size:1.2rem; color:rgba(255,255,255,0.95); margin:0 0 24px; }
+
+  /* Buttons centered */
+  .btn-container { display:flex; gap:28px; align-items:center; justify-content:center; z-index:20; position:relative; }
+  .btn {
+    padding:14px 34px;
+    border-radius:12px;
+    font-size:1.05rem;
+    border:none;
+    cursor:pointer;
+    box-shadow:0 8px 24px rgba(0,0,0,0.12);
+  }
+  .btn-yes { background:#ff4d8a;color:#fff;font-weight:600; }
+  .btn-yes:hover{ transform:scale(1.05); }
+  .btn-no { background:#fff;color:#ff4d8a;border:2px solid #ff4d8a; position:absolute; }
+
+  /* signature bottom-right */
+  .signature{
+    position:absolute; right:14px; bottom:10px;
+    font-family:'Playfair Display', serif;
+    font-style:italic; font-weight:600;
+    color:rgba(255,255,255,0.95); font-size:0.95rem;
+    letter-spacing:0.4px;
+  }
+
+  /* RESTAURANT PAGE (hidden by default) */
+  #restaurantPage{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:linear-gradient(180deg,#f8f4ef,#fffaf5);
+    overflow:auto;
+    padding:36px 18px;
+    box-sizing:border-box;
+  }
+  #restaurantPage .inner{
+    max-width:1000px; margin:0 auto; display:flex; flex-direction:column; align-items:center;
+  }
+  .rp-title { font-family:'Great Vibes',cursive; color:var(--accent); font-size:2.6rem; margin:8px 0 6px; }
+  .rp-sub { color:var(--muted); margin-bottom:24px; font-size:1.05rem; }
+
+  /* cards grid */
+  .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; width:100%; }
+  @media(max-width:880px){ .cards{ grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:520px){ .cards{ grid-template-columns:1fr;} }
+
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,245,238,1));
+    border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    overflow:hidden; display:flex; flex-direction:column; min-height:320px;
+    border:1px solid rgba(0,0,0,0.04);
+  }
+  .card img{ width:100%; height:170px; object-fit:cover; display:block; }
+  .card-body{ padding:14px 16px; flex:1; display:flex; flex-direction:column; justify-content:space-between; }
+  .card h3{ margin:0; font-family:'Playfair Display',serif; color:#222; font-size:1.15rem; }
+  .card p.desc{ margin:10px 0; color:#444; font-size:0.95rem; flex:1; }
+  .price{ color:var(--muted); font-size:0.92rem; margin-bottom:8px; }
+  .pick-btn{
+    background:var(--accent); color:#fff; border:none; padding:10px 14px; border-radius:8px; cursor:pointer;
+    font-weight:600; box-shadow:0 6px 18px rgba(197,157,95,0.18);
+  }
+  .pick-btn:hover{ transform:translateY(-3px); }
+
+  /* confirmation */
+  .confirmation{
+    margin-top:26px; font-size:1.05rem; color:#333; text-align:center;
+  }
+</style>
 </head>
 <body>
 
-<h1>Want to go out for dinner?</h1>
-<button id="yesButton">Yes 😘</button>
-<button id="noButton">No 🙈</button>
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Hey Yawie ❤️💍</h1>
+    <h2>Will you go on a date with me? 💕</h2>
 
-<div id="restaurant-cards">
-  <div class="card" data-name="Vine">
-    <img src="https://via.placeholder.com/150x100?text=Vine" alt="Vine">
-    <p>Vine</p>
+    <div class="btn-container">
+      <button id="yesBtn" class="btn btn-yes">Yes 😘</button>
+      <button id="noBtn" class="btn btn-no">No 🙈</button>
+    </div>
   </div>
-  <div class="card" data-name="Kyba">
-    <img src="https://via.placeholder.com/150x100?text=Kyba" alt="Kyba">
-    <p>Kyba</p>
-  </div>
-  <div class="card" data-name="Ten25">
-    <img src="https://via.placeholder.com/150x100?text=Ten25" alt="Ten25">
-    <p>Ten25</p>
-  </div>
-</div>
+
+  <div class="signature">Made specifically for Yaa Ayaw by you know who 😎</div>
+
+  <!-- Restaurant selection (hidden until Yes clicked) -->
+  <section id="restaurantPage" aria-hidden="true">
+    <div class="inner">
+      <h2 class="rp-title">Pick where we’re dining, my love 🍷</h2>
+      <div class="rp-sub">Three beautiful spots — tap one to choose. (Estimated ₵ per person shown)</div>
+
+      <div class="cards">
+        <!-- VINE -->
+        <article class="card" data-name="Vine Restaurant">
+          <img src="https://viewghana.com/wp-content/uploads/2025/02/Vine_restaurant_accra_external.jpg" alt="Vine Restaurant">
+          <div class="card-body">
+            <div>
+              <h3>Vine Restaurant & Lounge</h3>
+              <p class="desc">Mediterranean-inspired outdoor lounge with intimate seating and greenery.</p>
+              <div class="price">₵150 per person</div>
+            </div>
+            <button class="pick-btn">Pick Vine</button>
+          </div>
+        </article>
+
+        <!-- KYBA -->
+        <article class="card" data-name="Kyba">
+          <img src="https://res.cloudinary.com/hellokyba/image/upload/v1683100000/kyba_accra.jpg" alt="Kyba">
+          <div class="card-body">
+            <div>
+              <h3>Kyba</h3>
+              <p class="desc">Modern boho café with open-air seating and a vibrant atmosphere.</p>
+              <div class="price">₵120 per person</div>
+            </div>
+            <button class="pick-btn">Pick Kyba</button>
+          </div>
+        </article>
+
+        <!-- TEN25 -->
+        <article class="card" data-name="Ten25">
+          <img src="https://res.cloudinary.com/ten25cafe/image/upload/v1683100000/ten25_accra.jpg" alt="Ten25">
+          <div class="card-body">
+            <div>
+              <h3>Ten25</h3>
+              <p class="desc">Serene café with garden and skyview seating, perfect for a chill hangout.</p>
+              <div class="price">₵100 per person</div>
+            </div>
+            <button class="pick-btn">Pick Ten25</button>
+          </div>
+        </article>
+      </div>
+
+      <div class="confirmation" id="confirmation"></div>
+    </div>
+  </section>
 
 <script>
-// Show restaurant cards when "Yes" is clicked
-document.getElementById('yesButton').addEventListener('click', function() {
-  document.getElementById('restaurant-cards').style.display = 'flex';
+// Show restaurant page when Yes clicked
+document.getElementById('yesBtn').addEventListener('click', function(){
+  document.getElementById('restaurantPage').style.display = 'block';
 });
 
-// Make "No" button run away smoothly
-const noButton = document.getElementById('noButton');
+// Make No button run away endlessly
+const noBtn = document.getElementById('noBtn');
 document.body.addEventListener('mousemove', function(e) {
   const x = e.clientX;
   const y = e.clientY;
-  const rect = noButton.getBoundingClientRect();
-  const offset = 80; // distance from cursor to trigger movement
+  const rect = noBtn.getBoundingClientRect();
+  const offset = 80;
 
-  if (x > rect.left - offset && x < rect.right + offset &&
-      y > rect.top - offset && y < rect.bottom + offset) {
+  if(x > rect.left - offset && x < rect.right + offset &&
+     y > rect.top - offset && y < rect.bottom + offset) {
     const newX = Math.random() * (window.innerWidth - rect.width);
     const newY = Math.random() * (window.innerHeight - rect.height);
-    noButton.style.left = newX + 'px';
-    noButton.style.top = newY + 'px';
+    noBtn.style.left = newX + 'px';
+    noBtn.style.top = newY + 'px';
   }
 });
 
-// Handle restaurant card selection
-document.querySelectorAll('.card').forEach(card => {
-  card.addEventListener('click', function() {
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+// Handle picking a restaurant
+document.querySelectorAll('.pick-btn').forEach(btn=>{
+  btn.addEventListener('click', function(){
+    const card = btn.closest('.card');
+    const name = card.getAttribute('data-name');
+    document.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
     card.classList.add('selected');
-    alert(`You picked ${card.getAttribute('data-name')}! ✅`);
+    document.getElementById('confirmation').textContent = `You picked ${name}! Can’t wait for our date 😘`;
   });
 });
 </script>
