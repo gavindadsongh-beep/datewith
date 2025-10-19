@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hey Yawie ❤️💍</title>
-<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
   body {
@@ -25,15 +24,10 @@
     font-family: 'Great Vibes', cursive;
     font-size: 3em;
     margin-bottom: 0.5em;
-    z-index: 10;
-    position: relative;
   }
   h2 {
-    font-family: 'Poppins', sans-serif;
     font-size: 1.5em;
     margin-bottom: 1.5em;
-    z-index: 10;
-    position: relative;
   }
   .btn {
     padding: 15px 30px;
@@ -44,19 +38,11 @@
     cursor: pointer;
     transition: all 0.2s ease;
     margin: 10px;
-    z-index: 10;
-    position: relative;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
   }
   .yes { background-color: #ff1493; color: white; }
   .no { background-color: white; color: #ff1493; position: absolute; }
-  p {
-    font-family: 'Poppins', sans-serif;
-    z-index: 10;
-    position: relative;
-    margin-top: 2em;
-    font-size: 1.1em;
-  }
+  p { margin-top: 2em; font-size: 1.1em; }
   .heart {
     position: absolute;
     color: #ff69b4;
@@ -70,18 +56,18 @@
 </style>
 </head>
 <body>
-<h1>Hey Yawie ❤️💍</h1>
-<h2>Will you go on a date with me? 💕</h2>
-<div>
-  <button class="btn yes" onclick="yesClicked()">Yes 😘</button>
-  <button class="btn no" id="noBtn">No 🙈</button>
-</div>
-<p>From Gavin 💞</p>
+  <h1>Hey Yawie ❤️💍</h1>
+  <h2>Will you go on a date with me? 💕</h2>
+  <div>
+    <button class="btn yes" onclick="yesClicked()">Yes 😘</button>
+    <button class="btn no" id="noBtn">No 🙈</button>
+  </div>
+  <p>From Gavin 💞</p>
 
 <script>
 const noBtn = document.getElementById('noBtn');
 
-// Runaway No button
+// move the No button randomly forever
 function moveNo() {
   const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
   const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
@@ -89,18 +75,17 @@ function moveNo() {
   noBtn.style.top = y + 'px';
 }
 
-// Trigger move on hover/touch
-noBtn.addEventListener('mouseover', moveNo);
-noBtn.addEventListener('touchstart', moveNo);
-noBtn.addEventListener('mousemove', moveNo);
-noBtn.addEventListener('click', moveNo);
+// run away every time it's hovered or touched
+["mouseover", "mousemove", "touchstart", "touchmove", "click"].forEach(event => {
+  noBtn.addEventListener(event, moveNo);
+});
 
-// ✅ When Yes is clicked, go to the restaurant page
+// when Yes is clicked → go to restaurants page
 function yesClicked() {
   window.location.href = "restaurants.html";
 }
 
-// Floating hearts
+// floating hearts
 function createHeart() {
   const heart = document.createElement('div');
   heart.className = 'heart';
@@ -111,8 +96,6 @@ function createHeart() {
   heart.style.animationDuration = (3 + Math.random() * 3) + 's';
   setTimeout(() => heart.remove(), 6000);
 }
-
-// Create hearts continuously
 setInterval(createHeart, 300);
 </script>
 </body>
