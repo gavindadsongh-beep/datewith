@@ -28,7 +28,6 @@ body{
   position:relative;
 }
 
-/* HERO */
 .hero { text-align:center; z-index:10; padding: 20px; position:relative; }
 .hero h1 { font-family:'Great Vibes', cursive; font-size:3rem; color:#fff; margin:0 0 8px; text-shadow:0 6px 18px rgba(0,0,0,0.15); }
 .hero h2 { font-size:1.2rem; color:rgba(255,255,255,0.95); margin:0 0 24px; }
@@ -147,10 +146,10 @@ body{
 
       <!-- KYBA -->
       <article class="card" data-name="Kyba">
-        <img src="https://i.imgur.com/Ly5fWgD.jpg" alt="Kyba">
+        <img src="https://i.imgur.com/vLpUnQR.jpg" alt="Kyba Kitchen">
         <div class="card-body">
           <div>
-            <h3>Kyba</h3>
+            <h3>Kyba Kitchen</h3>
             <p class="desc">Modern boho café with open-air seating and a vibrant atmosphere.</p>
             <div class="price">₵120 per person</div>
           </div>
@@ -160,10 +159,10 @@ body{
 
       <!-- TEN25 -->
       <article class="card" data-name="Ten25">
-        <img src="https://i.imgur.com/6Xc3bqS.jpg" alt="Ten25">
+        <img src="https://i.imgur.com/9k6Q8wD.jpg" alt="Ten25 Cafe">
         <div class="card-body">
           <div>
-            <h3>Ten25</h3>
+            <h3>Ten25 Cafe</h3>
             <p class="desc">Serene café with garden and skyview seating, perfect for a chill hangout.</p>
             <div class="price">₵100 per person</div>
           </div>
@@ -184,13 +183,13 @@ const confirmation = document.getElementById('confirmation');
 const cards = document.querySelectorAll('.card');
 const pickBtns = document.querySelectorAll('.pick-btn');
 
-// Position Yes and No buttons
+// Position YES and NO buttons
 yesBtn.style.position = 'relative';
 noBtn.style.position = 'absolute';
 noBtn.style.top = '0px';
 noBtn.style.left = '180px';
 
-// Smooth runaway No button
+// Smooth runaway NO button
 document.body.addEventListener('mousemove', function(e){
   const rect = noBtn.getBoundingClientRect();
   const offset = 100;
