@@ -119,20 +119,21 @@ const pickBtns = document.querySelectorAll('.pick-btn');
 const cards = document.querySelectorAll('.card');
 const btnContainer = document.querySelector('.btn-container');
 
-// Smooth No button movement inside container
+// Make No button move smoothly whenever mouse moves over container
 btnContainer.addEventListener('mousemove', e => {
   const rect = noBtn.getBoundingClientRect();
-  const offset = 60;
   const containerRect = btnContainer.getBoundingClientRect();
-  if(e.clientX > rect.left - offset && e.clientX < rect.right + offset &&
-     e.clientY > rect.top - offset && e.clientY < rect.bottom + offset){
-    const maxX = containerRect.width - rect.width;
-    const maxY = containerRect.height - rect.height;
-    const delta = 30;
-    const newX = Math.min(Math.max(noBtn.offsetLeft + (Math.random()-0.5)*delta,0), maxX);
-    const newY = Math.min(Math.max(noBtn.offsetTop + (Math.random()-0.5)*delta,0), maxY);
-    noBtn.style.transform = `translate(${newX - noBtn.offsetLeft}px, ${newY - noBtn.offsetTop}px)`;
-  }
+  const maxX = containerRect.width - rect.width;
+  const maxY = containerRect.height - rect.height;
+
+  // small random shift
+  const deltaX = (Math.random()-0.5)*60;
+  const deltaY = (Math.random()-0.5)*60;
+
+  let newX = Math.min(Math.max(noBtn.offsetLeft + deltaX,0), maxX);
+  let newY = Math.min(Math.max(noBtn.offsetTop + deltaY,0), maxY);
+
+  noBtn.style.transform = `translate(${newX - noBtn.offsetLeft}px, ${newY - noBtn.offsetTop}px)`;
 });
 
 // Show restaurant page
