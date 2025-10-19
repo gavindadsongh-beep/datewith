@@ -4,76 +4,116 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hey Yawie ❤️💍</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
   body {
-    background-color: pink;
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+    height: 100vh;
+    margin: 0;
+    color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     overflow: hidden;
-    margin: 0;
-    text-align: center;
+    position: relative;
   }
-
   h1 {
-    color: white;
-    font-size: 2.5em;
-    margin-bottom: 40px;
+    font-family: 'Great Vibes', cursive;
+    font-size: 3em;
+    margin-bottom: 0.5em;
+    z-index: 10;
+    position: relative;
   }
-
-  .buttons {
-    display: flex;
-    gap: 20px;
+  h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5em;
+    margin-bottom: 1.5em;
+    z-index: 10;
+    position: relative;
   }
-
-  button {
-    padding: 12px 24px;
-    font-size: 1.2em;
+  .btn {
+    padding: 15px 30px;
+    font-size: 1.3em;
+    font-weight: 600;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.2s ease;
+    margin: 10px;
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
   }
-
-  #yesBtn {
-    background-color: white;
-    color: pink;
+  .yes { background-color: #ff1493; color: white; }
+  .no { background-color: white; color: #ff1493; position: absolute; }
+  p {
+    font-family: 'Poppins', sans-serif;
+    z-index: 10;
+    position: relative;
+    margin-top: 2em;
+    font-size: 1.1em;
   }
-
-  #yesBtn:hover {
-    background-color: #ffe6f2;
-  }
-
-  #noBtn {
-    background-color: white;
-    color: pink;
+  .heart {
     position: absolute;
+    color: #ff69b4;
+    font-size: 1.2em;
+    animation: floatUp linear;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
   }
 </style>
 </head>
 <body>
-  <h1>Hey Yawie ❤️💍<br>Will you go on a date with me?</h1>
-  <div class="buttons">
-    <button id="yesBtn" onclick="redirectToRestaurants()">Yes 💕</button>
-    <button id="noBtn" onmouseover="moveButton()">No 😜</button>
-  </div>
+<h1>Hey Yawie ❤️💍</h1>
+<h2>Will you go on a date with me? 💕</h2>
+<div>
+  <button class="btn yes" onclick="yesClicked()">Yes 😘</button>
+  <button class="btn no" id="noBtn">No 🙈</button>
+</div>
+<p>From Gavin 💞</p>
 
 <script>
-  const noBtn = document.getElementById("noBtn");
+const noBtn = document.getElementById('noBtn');
 
-  function moveButton() {
-    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-    noBtn.style.left = `${x}px`;
-    noBtn.style.top = `${y}px`;
-  }
+// Runaway No button
+function moveNo() {
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+  noBtn.style.left = x + 'px';
+  noBtn.style.top = y + 'px';
+}
 
-  function redirectToRestaurants() {
-    window.location.href = "restaurants.html"; // ✅ new redirect
-  }
+// Trigger move on hover/touch
+noBtn.addEventListener('mouseover', moveNo);
+noBtn.addEventListener('touchstart', moveNo);
+noBtn.addEventListener('mousemove', moveNo);
+noBtn.addEventListener('click', moveNo);
+
+// ✅ When Yes is clicked, go to the restaurant page
+function yesClicked() {
+  window.location.href = "restaurants.html";
+}
+
+// Floating hearts
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.style.left = Math.random() * window.innerWidth + 'px';
+  heart.style.fontSize = (12 + Math.random() * 20) + 'px';
+  heart.innerText = '💖';
+  document.body.appendChild(heart);
+  heart.style.animationDuration = (3 + Math.random() * 3) + 's';
+  setTimeout(() => heart.remove(), 6000);
+}
+
+// Create hearts continuously
+setInterval(createHeart, 300);
 </script>
 </body>
 </html>
