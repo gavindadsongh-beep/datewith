@@ -23,7 +23,7 @@ body {
 .hero h2 {font-size:1.2rem; color:rgba(255,255,255,0.95); margin:0 0 24px;}
 .btn-container {display:flex; gap:20px; justify-content:center; align-items:center; position:relative; flex-wrap:wrap;}
 #yesBtn {z-index:5;}
-#noBtn {position:fixed;}
+#noBtn {position:fixed; z-index:10;}
 .btn {padding:14px 34px; border-radius:12px; border:none; cursor:pointer; font-size:1.05rem; box-shadow:0 8px 24px rgba(0,0,0,0.12); transition:transform 0.2s;}
 .btn-yes {background:#ff4d8a; color:#fff; font-weight:600;}
 .btn-yes:hover {transform:scale(1.05);}
@@ -50,7 +50,7 @@ section.show {display:flex; opacity:1;}
 .pick-btn:hover {transform:translateY(-3px);}
 
 #finalPage {background:linear-gradient(180deg,#f8f4ef,#fffaf5);}
-#finalPage .final-msg {font-size:1.3rem; color:#333; text-align:center; max-width:600px; margin-top:40px;}
+#finalPage .final-msg {font-size:1.5rem; color:#c59d5f; text-align:center; max-width:600px; margin-top:40px; font-family:'Great Vibes', cursive;}
 .heart {position:absolute; color: rgba(255,0,128,0.85); font-size: 20px; user-select:none; pointer-events:none;}
 </style>
 </head>
@@ -118,16 +118,17 @@ const finalPage = document.getElementById('finalPage');
 const pickBtns = document.querySelectorAll('.pick-btn');
 const cards = document.querySelectorAll('.card');
 
-// No button moves inside viewport
+// Smooth No button movement (never leaves viewport)
 document.body.addEventListener('mousemove', e => {
   const rect = noBtn.getBoundingClientRect();
-  const offset = 100;
+  const offset = 80; // smaller offset for smoother motion
   if(e.clientX > rect.left - offset && e.clientX < rect.right + offset &&
      e.clientY > rect.top - offset && e.clientY < rect.bottom + offset){
     const maxX = window.innerWidth - rect.width;
     const maxY = window.innerHeight - rect.height;
-    const newX = Math.min(Math.max(Math.random() * maxX,0), maxX);
-    const newY = Math.min(Math.max(Math.random() * maxY,0), maxY);
+    const delta = 150; // max movement distance per frame
+    const newX = Math.min(Math.max(rect.left + (Math.random()-0.5)*delta,0), maxX);
+    const newY = Math.min(Math.max(rect.top + (Math.random()-0.5)*delta,0), maxY);
     noBtn.style.left = `${newX}px`;
     noBtn.style.top = `${newY}px`;
   }
@@ -150,39 +151,44 @@ pickBtns.forEach(btn => {
     restaurantPage.classList.remove('show');
     finalPage.classList.add('show');
     document.getElementById('finalMsg').textContent = `You picked ${name}! Take a screenshot and send it to me 💕`;
+
+    // Start floating hearts only on final page
+    startHearts();
   });
 });
 
-// Floating hearts
-function createHeart(){
-  const heart = document.createElement('div');
-  heart.className = 'heart';
-  heart.textContent = '❤️';
-  heart.style.left = Math.random()*window.innerWidth + 'px';
-  heart.style.top = window.innerHeight + 'px';
-  heart.style.fontSize = (12 + Math.random()*24) + 'px';
-  heart.style.opacity = 1;
-  document.body.appendChild(heart);
+// Floating hearts on final page
+function startHearts(){
+  function createHeart(){
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.textContent = '❤️';
+    heart.style.left = Math.random()*window.innerWidth + 'px';
+    heart.style.top = window.innerHeight + 'px';
+    heart.style.fontSize = (12 + Math.random()*24) + 'px';
+    heart.style.opacity = 1;
+    document.body.appendChild(heart);
 
-  let posY = window.innerHeight;
-  let posX = parseFloat(heart.style.left);
-  const drift = (Math.random() - 0.5) * 2;
+    let posY = window.innerHeight;
+    let posX = parseFloat(heart.style.left);
+    const drift = (Math.random()-0.5)*2;
 
-  function animate(){
-    posY -= 1.5;
-    posX += drift*0.5;
-    heart.style.top = posY + 'px';
-    heart.style.left = posX + 'px';
-    heart.style.opacity -= 0.0025;
-    if(posY + heart.offsetHeight < 0 || heart.style.opacity <= 0){
-      heart.remove();
-    } else {
-      requestAnimationFrame(animate);
+    function animate(){
+      posY -= 1.5;
+      posX += drift*0.5;
+      heart.style.top = posY + 'px';
+      heart.style.left = posX + 'px';
+      heart.style.opacity -= 0.0025;
+      if(posY + heart.offsetHeight < 0 || heart.style.opacity <= 0){
+        heart.remove();
+      } else {
+        requestAnimationFrame(animate);
+      }
     }
+    requestAnimationFrame(animate);
   }
-  requestAnimationFrame(animate);
+  setInterval(createHeart,300);
 }
-setInterval(createHeart, 300);
 </script>
 </body>
 </html>
