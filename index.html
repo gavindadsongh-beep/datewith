@@ -87,6 +87,12 @@ body{
   border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.08);
   overflow:hidden; display:flex; flex-direction:column; min-height:320px;
   border:1px solid rgba(0,0,0,0.04);
+  transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+}
+.card.selected{
+  border:3px solid #ff4d8a;
+  box-shadow:0 15px 35px rgba(255,77,138,0.35);
+  transform:translateY(-5px);
 }
 .card img{ width:100%; height:170px; object-fit:cover; display:block; }
 .card-body{ padding:14px 16px; flex:1; display:flex; flex-direction:column; justify-content:space-between; }
@@ -139,7 +145,7 @@ body{
 
       <!-- KYBA -->
       <article class="card" data-name="Kyba">
-        <img src="https://via.placeholder.com/300x170?text=Kyba" alt="Kyba">
+        <img src="https://drive.google.com/uc?export=view&id=18T4Vb-pfvQQJteTOvvnlxS963W1lRjzz" alt="Kyba">
         <div class="card-body">
           <div>
             <h3>Kyba</h3>
@@ -152,7 +158,7 @@ body{
 
       <!-- TEN25 -->
       <article class="card" data-name="Ten25">
-        <img src="https://via.placeholder.com/300x170?text=Ten25" alt="Ten25">
+        <img src="https://drive.google.com/uc?export=view&id=1YJQVSFjzm_MA98mQHw7CSdwcN4De01mR" alt="Ten25">
         <div class="card-body">
           <div>
             <h3>Ten25</h3>
@@ -172,7 +178,7 @@ body{
 // Set initial No button far enough from Yes
 const noBtn = document.getElementById('noBtn');
 noBtn.style.top = '0px';
-noBtn.style.left = '220px'; // start farther to the right
+noBtn.style.left = '220px';
 
 // Show restaurant page smoothly
 document.getElementById('yesBtn').addEventListener('click', function(){
@@ -196,7 +202,7 @@ document.body.addEventListener('mousemove', function(e) {
   }
 });
 
-// Restaurant pick
+// Restaurant pick and highlight
 document.querySelectorAll('.pick-btn').forEach(btn=>{
   btn.addEventListener('click', function(){
     const card = btn.closest('.card');
