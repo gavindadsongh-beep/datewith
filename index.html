@@ -28,13 +28,13 @@
     position:relative;
   }
 
-  /* Main heading area */
-  .hero { text-align:center; z-index:20; padding: 20px; }
+  /* HERO */
+  .hero { text-align:center; z-index:10; padding: 20px; position:relative; }
   .hero h1 { font-family:'Great Vibes', cursive; font-size:3rem; color:#fff; margin:0 0 8px; text-shadow:0 6px 18px rgba(0,0,0,0.15); }
   .hero h2 { font-size:1.2rem; color:rgba(255,255,255,0.95); margin:0 0 24px; }
 
-  /* Buttons centered */
-  .btn-container { display:flex; gap:28px; align-items:center; justify-content:center; z-index:20; position:relative; }
+  /* Buttons */
+  .btn-container { display:flex; gap:28px; align-items:center; justify-content:center; position:relative; }
   .btn {
     padding:14px 34px;
     border-radius:12px;
@@ -42,21 +42,23 @@
     border:none;
     cursor:pointer;
     box-shadow:0 8px 24px rgba(0,0,0,0.12);
+    z-index:5;
   }
   .btn-yes { background:#ff4d8a;color:#fff;font-weight:600; }
   .btn-yes:hover{ transform:scale(1.05); }
-  .btn-no { background:#fff;color:#ff4d8a;border:2px solid #ff4d8a; position:absolute; }
+  .btn-no { background:#fff;color:#ff4d8a;border:2px solid #ff4d8a; position:absolute; top:0; left:160px; }
 
-  /* signature bottom-right */
+  /* signature */
   .signature{
     position:absolute; right:14px; bottom:10px;
     font-family:'Playfair Display', serif;
     font-style:italic; font-weight:600;
     color:rgba(255,255,255,0.95); font-size:0.95rem;
     letter-spacing:0.4px;
+    z-index:5;
   }
 
-  /* RESTAURANT PAGE (hidden by default) */
+  /* RESTAURANT PAGE */
   #restaurantPage{
     display:none;
     position:fixed;
@@ -65,14 +67,18 @@
     overflow:auto;
     padding:36px 18px;
     box-sizing:border-box;
+    z-index:50;
+    opacity:0;
+    transition: opacity 0.5s ease;
   }
+  #restaurantPage.show { display:block; opacity:1; }
+
   #restaurantPage .inner{
     max-width:1000px; margin:0 auto; display:flex; flex-direction:column; align-items:center;
   }
   .rp-title { font-family:'Great Vibes',cursive; color:var(--accent); font-size:2.6rem; margin:8px 0 6px; }
   .rp-sub { color:var(--muted); margin-bottom:24px; font-size:1.05rem; }
 
-  /* cards grid */
   .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; width:100%; }
   @media(max-width:880px){ .cards{ grid-template-columns:repeat(2,1fr);} }
   @media(max-width:520px){ .cards{ grid-template-columns:1fr;} }
@@ -94,7 +100,6 @@
   }
   .pick-btn:hover{ transform:translateY(-3px); }
 
-  /* confirmation */
   .confirmation{
     margin-top:26px; font-size:1.05rem; color:#333; text-align:center;
   }
@@ -102,7 +107,6 @@
 </head>
 <body>
 
-  <!-- HERO -->
   <div class="hero">
     <h1>Hey Yawie ❤️💍</h1>
     <h2>Will you go on a date with me? 💕</h2>
@@ -115,14 +119,12 @@
 
   <div class="signature">Made specifically for Yaa Ayaw by you know who 😎</div>
 
-  <!-- Restaurant selection (hidden until Yes clicked) -->
   <section id="restaurantPage" aria-hidden="true">
     <div class="inner">
       <h2 class="rp-title">Pick where we’re dining, my love 🍷</h2>
       <div class="rp-sub">Three beautiful spots — tap one to choose. (Estimated ₵ per person shown)</div>
 
       <div class="cards">
-        <!-- VINE -->
         <article class="card" data-name="Vine Restaurant">
           <img src="https://viewghana.com/wp-content/uploads/2025/02/Vine_restaurant_accra_external.jpg" alt="Vine Restaurant">
           <div class="card-body">
@@ -135,7 +137,6 @@
           </div>
         </article>
 
-        <!-- KYBA -->
         <article class="card" data-name="Kyba">
           <img src="https://res.cloudinary.com/hellokyba/image/upload/v1683100000/kyba_accra.jpg" alt="Kyba">
           <div class="card-body">
@@ -148,7 +149,6 @@
           </div>
         </article>
 
-        <!-- TEN25 -->
         <article class="card" data-name="Ten25">
           <img src="https://res.cloudinary.com/ten25cafe/image/upload/v1683100000/ten25_accra.jpg" alt="Ten25">
           <div class="card-body">
@@ -167,13 +167,18 @@
   </section>
 
 <script>
-// Show restaurant page when Yes clicked
+// Show restaurant page smoothly
 document.getElementById('yesBtn').addEventListener('click', function(){
-  document.getElementById('restaurantPage').style.display = 'block';
+  const page = document.getElementById('restaurantPage');
+  page.classList.add('show');
+  page.scrollTo({top:0, behavior:'smooth'});
 });
 
 // Make No button run away endlessly
 const noBtn = document.getElementById('noBtn');
+noBtn.style.top = '0px';
+noBtn.style.left = '160px';
+
 document.body.addEventListener('mousemove', function(e) {
   const x = e.clientX;
   const y = e.clientY;
@@ -189,7 +194,7 @@ document.body.addEventListener('mousemove', function(e) {
   }
 });
 
-// Handle picking a restaurant
+// Restaurant pick
 document.querySelectorAll('.pick-btn').forEach(btn=>{
   btn.addEventListener('click', function(){
     const card = btn.closest('.card');
