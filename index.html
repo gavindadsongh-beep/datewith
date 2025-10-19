@@ -1,163 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Will You Be My Date? ❤️</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Choice</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to bottom right, #ffe5ec, #fffaf0);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-      text-align: center;
-    }
-
-    h1 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3rem;
-      color: #d6336c;
-      margin-bottom: 40px;
-    }
-
-    .btn-container {
-      display: flex;
-      gap: 40px;
-      justify-content: center;
-      align-items: center;
-    }
-
-    button {
-      padding: 15px 35px;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.3s ease;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    #yes {
-      background-color: #ffb6c1;
-      color: #fff;
-      font-weight: 600;
-    }
-
-    #yes:hover {
-      background-color: #ff9aae;
-      transform: scale(1.1);
-    }
-
-    #no {
-      background-color: #fff;
-      color: #d6336c;
-      border: 2px solid #d6336c;
-      position: relative;
-    }
-
-    footer {
-      position: absolute;
-      bottom: 10px;
-      font-size: 0.8rem;
-      font-family: 'Poppins', sans-serif;
-      font-style: italic;
-      font-weight: bold;
-      color: #555;
-    }
-
-    /* Restaurant Page Styling */
-    .restaurant-page {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f8f4ef;
-      color: #333;
-    }
-
-    .restaurant-page h2 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-
-    .restaurant-page p {
-      font-size: 1.1rem;
-      margin-bottom: 30px;
-    }
-
-    .restaurant-btn {
-      padding: 15px 30px;
-      margin: 10px;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: 1px solid #cbb279;
-      background-color: #fff;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .restaurant-btn:hover {
-      background-color: #f1e3c6;
-      transform: scale(1.05);
-    }
-
-    .message {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #444;
-    }
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; position: relative; }
+    button { padding: 10px 20px; margin: 10px; font-size: 18px; cursor: pointer; }
+    #restaurant-cards { display: none; margin-top: 20px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    .card { width: 150px; border: 2px solid #ccc; border-radius: 10px; overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
+    .card:hover { transform: scale(1.05); }
+    .card img { width: 100%; height: 100px; object-fit: cover; }
+    .card p { margin: 10px 0; font-weight: bold; }
+    .selected { border-color: #ff4d6d; }
+    #noButton { position: absolute; top: 200px; left: 200px; transition: top 0.2s, left 0.2s; }
   </style>
 </head>
 <body>
-  <h1>Will you be my date, Yaa Ayaw? 💖</h1>
-  <div class="btn-container">
-    <button id="yes">Yes 😘</button>
-    <button id="no">No 😅</button>
+
+<h1>Want to go out for dinner?</h1>
+<button id="yesButton">Yes 😘</button>
+<button id="noButton">No 🙈</button>
+
+<div id="restaurant-cards">
+  <div class="card" data-name="Vine">
+    <img src="https://via.placeholder.com/150x100?text=Vine" alt="Vine">
+    <p>Vine</p>
   </div>
-
-  <footer>Made specifically for Yaa Ayaw by you know who 😎</footer>
-
-  <div class="restaurant-page" id="restaurantPage">
-    <h2>Pick where we’re dining, my love 🍷</h2>
-    <p>Choose one of these beautiful spots for our date night 💕</p>
-    <button class="restaurant-btn" onclick="pickRestaurant('Vine Restaurant')">🍇 Vine Restaurant</button>
-    <button class="restaurant-btn" onclick="pickRestaurant('Kyba Restaurant')">🍽️ Kyba Restaurant</button>
-    <button class="restaurant-btn" onclick="pickRestaurant('Ten25 Restaurant')">🥂 Ten25 Restaurant</button>
-    <p class="message" id="choiceMessage"></p>
+  <div class="card" data-name="Kyba">
+    <img src="https://via.placeholder.com/150x100?text=Kyba" alt="Kyba">
+    <p>Kyba</p>
   </div>
+  <div class="card" data-name="Ten25">
+    <img src="https://via.placeholder.com/150x100?text=Ten25" alt="Ten25">
+    <p>Ten25</p>
+  </div>
+</div>
 
-  <script>
-    const noButton = document.getElementById('no');
-    const yesButton = document.getElementById('yes');
-    const restaurantPage = document.getElementById('restaurantPage');
-    const choiceMessage = document.getElementById('choiceMessage');
+<script>
+// Show restaurant cards when "Yes" is clicked
+document.getElementById('yesButton').addEventListener('click', function() {
+  document.getElementById('restaurant-cards').style.display = 'flex';
+});
 
-    noButton.addEventListener('mouseover', () => {
-      const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
-      const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
-      noButton.style.position = 'absolute';
-      noButton.style.left = `${x}px`;
-      noButton.style.top = `${y}px`;
-    });
+// Make "No" button run away smoothly
+const noButton = document.getElementById('noButton');
+document.body.addEventListener('mousemove', function(e) {
+  const x = e.clientX;
+  const y = e.clientY;
+  const rect = noButton.getBoundingClientRect();
+  const offset = 80; // distance from cursor to trigger movement
 
-    yesButton.addEventListener('click', () => {
-      document.querySelector('h1').style.display = 'none';
-      document.querySelector('.btn-container').style.display = 'none';
-      restaurantPage.style.display = 'flex';
-      document.body.style.background = '#f8f4ef';
-    });
+  if (x > rect.left - offset && x < rect.right + offset &&
+      y > rect.top - offset && y < rect.bottom + offset) {
+    const newX = Math.random() * (window.innerWidth - rect.width);
+    const newY = Math.random() * (window.innerHeight - rect.height);
+    noButton.style.left = newX + 'px';
+    noButton.style.top = newY + 'px';
+  }
+});
 
-    function pickRestaurant(name) {
-      choiceMessage.textContent = `Perfect choice 😍 You picked ${name} — can’t wait to take you there, my Queen 💖`;
-    }
-  </script>
+// Handle restaurant card selection
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('click', function() {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    alert(`You picked ${card.getAttribute('data-name')}! ✅`);
+  });
+});
+</script>
+
 </body>
 </html>
