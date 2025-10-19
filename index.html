@@ -183,13 +183,13 @@ const confirmation = document.getElementById('confirmation');
 const cards = document.querySelectorAll('.card');
 const pickBtns = document.querySelectorAll('.pick-btn');
 
-// Position YES and NO buttons
+// Initial positions
 yesBtn.style.position = 'relative';
 noBtn.style.position = 'absolute';
 noBtn.style.top = '0px';
 noBtn.style.left = '180px';
 
-// Smooth runaway NO button
+// Smooth runaway NO button within viewport
 document.body.addEventListener('mousemove', function(e){
   const rect = noBtn.getBoundingClientRect();
   const offset = 100;
@@ -198,11 +198,14 @@ document.body.addEventListener('mousemove', function(e){
 
   if(x > rect.left - offset && x < rect.right + offset &&
      y > rect.top - offset && y < rect.bottom + offset){
+
     const maxX = window.innerWidth - rect.width;
     const maxY = window.innerHeight - rect.height;
+
     const newX = Math.random() * maxX;
     const newY = Math.random() * maxY;
 
+    noBtn.style.transition = 'left 0.3s ease, top 0.3s ease';
     noBtn.style.left = `${newX}px`;
     noBtn.style.top = `${newY}px`;
   }
